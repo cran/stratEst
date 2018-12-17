@@ -1,4 +1,4 @@
-77be70c276b7f488e93f3a7074b96c2c *DESCRIPTION
+aa4bd774b5a71c956c804050addcb52f *DESCRIPTION
 8bc2ef92ba3acdc87c42c52f9ce4af9c *NAMESPACE
 51d1285e5ae707093bee2cdeb02b74f8 *R/ALLC.R
 61393b7bac8bc19ce378b2701f54b367 *R/ALLD.R
@@ -93,7 +93,7 @@ b303407ba7077d39bcdd053e7012a664 *src/RcppExports.cpp
 3e4e464c09baf6c22e6b6b7615edff66 *src/cleanup.txt
 6f35999ed6c5117a6c547833c636afd1 *src/rcpparma_hello_world.cpp
 7c22b1b500cab25872924e218f1645f5 *src/registerDynamicSymbol.c
-d5cd16a29d5cbe0c435e39f2f90e04ed *src/stratEst.cpp
+494dee02d8c1e40da29501fc0b2bd62e *src/stratEst.cpp
 9589c6a8a1aaefd7e4de011099a48666 *src/transform.cpp
 81e9acd23bf8cde1a29abeffb42574b1 *src/transform_pd.cpp
 4b08ba758445bcb2865d535a5d4a2ecd *tests/testthat.R
