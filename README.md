@@ -3,27 +3,36 @@
 
 # stratEst
 
-stratEst is a statistical software package which implements variants of
-the strategy estimation method (Dal Bo & Frechette, 2011). Strategies
-can be estimated from the data or supplied by the user in the form of
-deterministic finite-state automata. The package uses the EM algorithm
-(Dempster, 1977) and the Newton-Raphson method to obtain
-maximum-likelihood estimates of the population shares and choice
-parameters of the strategies. The number and the complexity of
-strategies can be restricted by the user or selected based on
-information criteria. The package also features an extension of strategy
-estimation in the spirit of latent class regression to assess the
-effects of covariates on strategy use.
+stratEst is a statistical software package for strategy estimation (Dal
+Bo and Frechette, 2011). The goal of strategy estimation is to explain
+choices of a sample of individuals by a finite mixture of discrete
+choice strategies. The discrete choice strategies are deterministic
+finite state automata that can be customized by the user to fit the
+structure of the data. The parameters of the strategy estimation model
+are the relative frequencies and the choice parameters of the
+strategies. The model can be extended by adding individual level
+covariates to explain the selection of strategies by individuals. The
+estimation function of the package uses expectation maximization
+(Dempster, Laird, and Rubin, 1977) and Newton-Raphson methods to find
+the maximum likelihood estimates of the model parameters. To speed up
+the estimation, the package integrates C++ and R with the help of the R
+packages Rcpp (Eddelbuettel and Francois 2011) and the open source
+linear algebra library for the C++ language RppArmadillo (Sanderson and
+Curtin 2016). The package contains additional functions for data
+processing and simulation, strategy generation, parameter tests, model
+checking, and model selection.
 
 ## Installation
 
-To install the stratEst package from CRAN:
+The most recent CRAN version of stratEst is installed by executing the
+following command in the R console:
 
 ``` r
 install.packages("stratEst")
 ```
 
-You can install the development version of stratEst from github:
+The development version of the package can be installed from GitHub with
+the help of the package devtools (Wickham, Hester, and Chang 2020):
 
 ``` r
 install.packages("devtools")
@@ -32,38 +41,31 @@ devtools::install_github("fdvorak/stratEst")
 
 ## Example
 
-This example shows how to replicate the results in column 1 of table 7
-on page 424 of Dal Bo and Frechette (2011). The results for the first
-treatment with delta = 1/2 and R = 32 can be obtained with the following
-code.
+Fit a strategy estimation model with two strategies to the
+rock-paper-scissors data of Wang, Xu, and Zhou (2014). The model is a
+mixture of the Nash strategy and a strategy that imitates the last
+choice.
 
 ``` r
 library(stratEst)
-data <- DF2011[DF2011$treatment == 1,]
-strats <- rbind(ALLD,ALLC,GRIM,TFT,T2,WSLS)
-model <- stratEst(data,strats,print.messages = F)
-round(model$shares,3)
-#>      [,1]
-#> [1,] 0.92
-#> [2,] 0.00
-#> [3,] 0.00
-#> [4,] 0.08
-#> [5,] 0.00
-#> [6,] 0.00
+strategies.mixture = list("nash" = strategies.RPS$nash, "imitate" = strategies.RPS$imitate)
+model.mixture <- stratEst.model(data.WXZ2014,strategies.mixture)
 ```
 
 ## References
 
-  - Breitmoser, Y. (2015): Cooperation, but no reciprocity: Individual
-    strategies in the repeated prisoner’s dilemma, American Economic
-    Review, 105, 2882-2910.
-  - Dal Bo, P. and G. R. Frechette (2011): The evolution of cooperation
-    in infinitely repeated games: Experimental evidence, American
-    Economic Review, 101, 411-429.
-  - Dempster, A., N. Laird, and D. B. Rubin (1977): Maximum likelihood
-    from incomplete data via the EM algorithm," Journal of the Royal
-    Statistical Society Series B, 39, 1-38.
-  - Eddelbuettel, D. and R. Francois (2011): Rcpp: Seamless R and C++
-    Integration, Journal of Statistical Software, 40, 1-18.
-  - Sanderson, C. and R. Curtin (2016): Armadillo: a template-based C++
-    library for linear algebra. Journal of Open Source Software, 1-26.
+  - Dal Bo P, Frechette GR (2011). “The Evolution of Cooperation in
+    Infinitely Repeated Games: Experimental Evidence.” American Economic
+    Review, 101(1), 411-429.
+  - Dempster A, Laird N, Rubin DB (1977). “Maximum Likelihood from
+    Incomplete Data via the EM Algorithm.” Journal of the Royal
+    Statistical Society Series B, 39(1), 1-38.
+  - Eddelbuettel D, Francois R (2011). “Rcpp: Seamless R and C++
+    Integration.” Journal of Statistical Software, 40(8), 1-18.
+  - Sanderson C, Curtin R (2016). “Armadillo: A Template-Based C++
+    Library for Linear Algebra.”
+  - Wang Z, Xu B, Zhou HJ (2014). “Social Cycling and Conditional
+    Responses in the Rock-Paper-Scissors Game.” Scientific Reports,
+    4(1), 2045-2322.
+  - Wickham H, Hester J, Chang W (2020). “devtools: Tools to Make
+    Developing R Packages Easier.” R package version 2.3.0.
