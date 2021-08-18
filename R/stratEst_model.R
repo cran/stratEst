@@ -105,7 +105,7 @@
 #'
 #' Wang Z, Xu B, Zhou HJ (2014). "Social Cycling and Conditional Responses in the Rock-Paper-Scissors Game." \emph{Scientific Reports}, 4(1), 2045-2322.
 #'
-#'#' @examples
+#' @examples
 #' ## Strategy model for rock-paper-scissors data of Wang, Xu, and Zhou (2014).
 #' ## Fit a mixture of the Nash strategy and a strategy that imitates the last choice.
 #' strategies.mixture = list("nash" = strategies.RPS$nash, "imitate" = strategies.RPS$imitate)
@@ -161,15 +161,8 @@ stratEst.model <- function( data, strategies, shares = NULL, coefficients = NULL
     sample_is_factor = TRUE
   }
 
-  # check cluster.id
-  #if( T ){
-    cluster <- matrix(0,1,1)
-  #}
-  # else{
-  #   stratEst.check.cluster.id.return <- stratEst.check.cluster.id( data , cluster.id )
-  #   cluster <- stratEst.check.cluster.id.return$cluster
-  #   cluster_factor <- stratEst.check.cluster.id.return$cluster.factor
-  # }
+  # create cluster.id
+  cluster <- matrix(0,1,1)
 
   # check covariates
   if( is.null(covariates) ){

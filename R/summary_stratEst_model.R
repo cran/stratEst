@@ -1,9 +1,10 @@
 #' Method dispatch for Generic Function Summary
 #' @param object An object returned by the estimation function\code{stratEst.model()}. An object of class \code{stratEst.model}.
 #' @param ... additional arguments affecting the summary produced.
+#' @param plot.shares Logical. If TRUE a barchart of the shares is plotted.
 #' @export
 
-summary.stratEst.model <- function( object , ... ){
+summary.stratEst.model <- function( object , ..., plot.shares = TRUE ){
 
   stratEst.return <- object
 
@@ -50,6 +51,34 @@ summary.stratEst.model <- function( object , ... ){
       print(round(strategies_print,2))
     }
     writeLines("")
+
+    if( plot.shares ){
+      def.palette <- c("#B3CDE3","#DECBE4","#CCEBC5","#FED9A6","#FFFFCC","#E5D8BD","#FDDAEC","#B3E2CD","#FDCDAC","#CBD5E8","#F4CAE4","#E6F5C9","#FFF2AE","#F1E2CC","#FBB4AE")
+
+      # function for SEs
+      error.ses <- function(xx, yy, upper, lower=upper, length=0, color = "black" ,...){
+        if(length(xx) != length(yy) | length(yy) !=length(lower) | length(lower) != length(upper))
+          stop("vectors must be same length")
+        graphics::segments( xx , yy -lower , xx , yy + upper ,  lty = 1, lwd = 1.2 , col = color, lend = 2  )
+      }
+
+      model <- object
+      if( "list" %in% class(model$shares) ){
+        shares <- do.call(rbind,model$shares)
+        num.strategies <- ncol(shares)
+        num.treatments <- nrow(shares)
+        graphics::par(mar = c(5,4,4,10))
+        bars <- graphics::barplot(shares, beside = T, main = "estimated shares", xlab="strategies", ylab="frequency", ylim=c(0,1), col = def.palette[1:num.treatments], legend = rownames(shares), args.legend = list(x = 'right', bty='n', inset=c(-0.40,0), xpd = TRUE ) )
+        error.ses(t(bars),c(t(shares)),c(model$shares.se))
+        graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
+      }else{
+        shares <- model$shares
+        num.strategies <- ncol(shares)
+        bars <- graphics::barplot(shares, beside = T, main = "estimated shares", xlab="strategies", ylab="frequency", ylim=c(0,1), col = def.palette[1:num.strategies] )
+        error.ses(bars,c(shares),c(model$shares.se))
+      }
+
+    }
 }
 
 
