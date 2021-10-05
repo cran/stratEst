@@ -31,7 +31,7 @@ stratEst.model(
   bs.samples = 1000,
   quantiles = c(0.05, 0.5, 0.95),
   step.size = 1,
-  penalty = F,
+  penalty = FALSE,
   verbose = FALSE
 )
 }
@@ -162,13 +162,6 @@ Strategy estimation was introduced by Dal Bo and Frechette (2011) to estimate th
 ## Fit a mixture of the Nash strategy and a strategy that imitates the last choice.
 strategies.mixture = list("nash" = strategies.RPS$nash, "imitate" = strategies.RPS$imitate)
 model.mixture <- stratEst.model(data.WXZ2014,strategies.mixture)
-
-## Replication of Dal Bo and Frechette (2011), Table 7, page 424
-model.DF2011 <- stratEst.model(data.DF2011, strategies.DF2011, sample.id = "treatment")
-
-## Replication of Dvorak, Fischbacher, and Schmelz (2020)
-covs <- c("intercept", "conformity.score")
-model.DFS2020 <- stratEst.model(data.DFS2020, strategies.DFS2020, covariates = covs)
 
 }
 \references{

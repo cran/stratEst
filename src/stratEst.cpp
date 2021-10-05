@@ -206,9 +206,10 @@ arma::field<arma::mat> stratEst_EM(arma::cube& output_cube, arma::cube& sum_outp
 
     // loop through ids
     for (int i = 0; i < num_ids; i++) {
-
-      arma::mat response_mat_id = response_cube.slice( sample_of_ids_responses(i) - 1 );
-      arma::mat tremble_mat_id = tremble_cube.slice( sample_of_ids_trembles(i) - 1 );
+      int sample_of_ids_responses_int = sample_of_ids_responses(i);
+      int sample_of_ids_trembles_int = sample_of_ids_trembles(i);
+      arma::mat response_mat_id = response_cube.slice( sample_of_ids_responses_int - 1 );
+      arma::mat tremble_mat_id = tremble_cube.slice( sample_of_ids_trembles_int - 1 );
 
       // calculate emission probabilities with trembles
       arma::mat pr_mat = response_mat_id % (1 - tremble_mat_id) + ( 1 - response_mat_id ) % ( tremble_mat_id / (num_outputs - 1) );   // probability for emission with trembles
@@ -227,21 +228,23 @@ arma::field<arma::mat> stratEst_EM(arma::cube& output_cube, arma::cube& sum_outp
       }
 
       // log likelihood contribution of subject
-      pr_entity_k %= share_mat( arma::span::all , sample_of_ids_shares(i) - 1 );
+      int sample_of_ids_shares_int = sample_of_ids_shares(i);
+      pr_entity_k %= share_mat( arma::span::all , sample_of_ids_shares_int - 1 );
       new_ll_val += -log( sum( pr_entity_k , 0 ) );
 
       // share contribution of subject as posterior probability of i to use k / N
       arma::vec i_shares = pr_entity_k.each_row() / sum( pr_entity_k , 0 );
-      arma::uvec shares_to_est_col = find( indices_shares( arma::span::all , sample_of_ids_shares(i) - 1 ) != 0 );
-      arma::vec new_shares_col = new_share_mat( arma::span::all , sample_of_ids_shares(i) - 1 );
-      new_shares_col( shares_to_est_col ) += ( i_shares( shares_to_est_col )  / num_ids_sample_shares( sample_of_ids_shares(i) - 1 ) );
-      new_share_mat( arma::span::all , sample_of_ids_shares(i) - 1 ) = new_shares_col;
+      arma::uvec shares_to_est_col = find( indices_shares( arma::span::all , sample_of_ids_shares_int - 1 ) != 0 );
+      arma::vec new_shares_col = new_share_mat( arma::span::all , sample_of_ids_shares_int - 1 );
+      new_shares_col( shares_to_est_col ) += ( i_shares( shares_to_est_col )  / num_ids_sample_shares( sample_of_ids_shares_int - 1 ) );
+      new_share_mat( arma::span::all , sample_of_ids_shares_int - 1 ) = new_shares_col;
 
       i_shares_mat.row(i) = i_shares.t();
       arma::mat lines_entity_k = repmat( i_shares , 1 , num_cols_response_mat );
       arma::mat entity_slice( num_rows_response_mat , num_cols_response_mat );
       for ( int l = 0; l < num_rows_response_mat; l++){
-        entity_slice.row(l) = lines_entity_k.row( strat_id( l ) - 1 );
+        int strat_id_int = strat_id(l);
+        entity_slice.row(l) = lines_entity_k.row( strat_id_int - 1 );
       }
       i_shares_cube.slice(i) = entity_slice;
 
@@ -317,7 +320,8 @@ arma::field<arma::mat> stratEst_EM(arma::cube& output_cube, arma::cube& sum_outp
     arma::cube tremble_correction_factor_cube_id( num_rows_response_mat , num_cols_response_mat , num_ids, arma::fill::ones );
     if( num_samples_responses > 1 ){
       for (int i = 0; i < num_ids; i++) {
-        arma::mat response_cube_id_slice = response_cube.slice( sample_of_ids_responses(i) - 1 );
+        int sample_of_ids_responses_int = sample_of_ids_responses(i);
+        arma::mat response_cube_id_slice = response_cube.slice( sample_of_ids_responses_int - 1 );
         arma::mat tremble_correction_factor_mat( num_rows_response_mat , num_cols_response_mat , arma::fill::ones );
         tremble_correction_factor_mat( find( response_cube_id_slice == 0 ) ).fill( num_cols_response_mat-1 );
         tremble_correction_factor_mat( find( response_cube_id_slice == 1 ) ).fill( -1 );
@@ -428,6 +432,7 @@ arma::field<arma::mat> stratEst_LCR_EM(arma::cube& output_cube, arma::cube& sum_
   int num_samples_trembles = sample_of_ids_trembles.max();
   int num_coefficients_to_est = coefficients.n_elem;
   int num_coefficients = coefficients_mat.n_rows*num_cols_coefficients_mat;
+  int num_coefficients_minus_one = num_coefficients-1;
   int num_coefficients_short_vec = num_coefficients - coefficients_mat.n_rows;
   arma::umat indices_responses_to_sum = find( responses_to_sum == 1 );
   arma::umat indices_non_fixed_responses = find( indices_responses == 0 && responses_to_sum == 0 );
@@ -583,9 +588,10 @@ arma::field<arma::mat> stratEst_LCR_EM(arma::cube& output_cube, arma::cube& sum_
 
       // loop through ids
       for (int i = 0; i < num_ids; i++) {
-
-        arma::mat response_mat_id = response_cube.slice( sample_of_ids_responses(i) - 1 );
-        arma::mat tremble_mat_id = tremble_cube.slice( sample_of_ids_trembles(i) - 1 );
+        int sample_of_ids_responses_int = sample_of_ids_responses(i);
+        int sample_of_ids_trembles_int = sample_of_ids_trembles(i);
+        arma::mat response_mat_id = response_cube.slice( sample_of_ids_responses_int - 1 );
+        arma::mat tremble_mat_id = tremble_cube.slice( sample_of_ids_trembles_int - 1 );
 
          // calculate emission probabilities with trembles
         arma::mat pr_mat = response_mat_id % (1 - tremble_mat_id) + ( 1 - response_mat_id ) % ( tremble_mat_id / (num_outputs - 1) );   // probability for emission with trembles
@@ -617,7 +623,8 @@ arma::field<arma::mat> stratEst_LCR_EM(arma::cube& output_cube, arma::cube& sum_
         arma::mat lines_entity_k = repmat( i_shares , 1 , num_cols_response_mat );
         arma::mat entity_slice( num_rows_response_mat , num_cols_response_mat );
         for ( int l = 0; l < num_rows_response_mat; l++){
-          entity_slice.row(l) = lines_entity_k.row( strat_id( l ) - 1 );
+          int strat_id_int = strat_id(l);
+          entity_slice.row(l) = lines_entity_k.row( strat_id_int - 1 );
         }
         i_shares_cube.slice(i) = entity_slice;
 
@@ -787,7 +794,8 @@ arma::field<arma::mat> stratEst_LCR_EM(arma::cube& output_cube, arma::cube& sum_
       arma::cube tremble_correction_factor_cube_id( num_rows_response_mat , num_cols_response_mat , num_ids, arma::fill::ones );
       if( num_samples_responses > 1 ){
         for (int i = 0; i < num_ids; i++) {
-          arma::mat response_cube_id_slice = response_cube.slice( sample_of_ids_responses(i) - 1 );
+          int sample_of_ids_responses_int = sample_of_ids_responses(i);
+          arma::mat response_cube_id_slice = response_cube.slice( sample_of_ids_responses_int - 1 );
           arma::mat tremble_correction_factor_mat( num_rows_response_mat , num_cols_response_mat , arma::fill::ones );
           tremble_correction_factor_mat( find( response_cube_id_slice == 0 ) ).fill( num_cols_response_mat-1 );
           tremble_correction_factor_mat( find( response_cube_id_slice == 1 ) ).fill( -1 );
@@ -818,16 +826,16 @@ arma::field<arma::mat> stratEst_LCR_EM(arma::cube& output_cube, arma::cube& sum_
 
     // update coefficients
     if( estimate_coefficients && num_coefficients_to_est > 0 ){
-          short_score_vec = score_vec( arma::span( num_rows_coefficients_mat , num_coefficients-1 ) );
-          arma::mat lower_hessian_mat = hessian_mat( arma::span( num_rows_coefficients_mat , num_coefficients-1 ) , arma::span( num_rows_coefficients_mat , num_coefficients-1 ) );
-          arma::mat lower_fisher = fisher_info( arma::span( num_rows_coefficients_mat , num_coefficients-1 ) , arma::span( num_rows_coefficients_mat , num_coefficients-1 ) );
+          short_score_vec = score_vec( arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) );
+          arma::mat lower_hessian_mat = hessian_mat( arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) , arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) );
+          arma::mat lower_fisher = fisher_info( arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) , arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) );
           arma::mat inverted_mat( num_coefficients_to_est , num_coefficients_to_est , arma::fill::none );
           arma::mat to_invert_mat = -lower_hessian_mat;                       // observed fisher is negative hesiian since we are minimizing the log likelihood
       if( pinv( inverted_mat , to_invert_mat ) ){
               if( penalty == true ){
                 for(int c = 0; c < num_coefficients_to_est; c++){
                   arma::mat d_hessian_slice = d_hessian_cube.slice(num_rows_coefficients_mat+c);
-                  arma::mat lower_d_hessian_mat = d_hessian_slice( arma::span( num_rows_coefficients_mat , num_coefficients-1 ) , arma::span( num_rows_coefficients_mat , num_coefficients-1 ) );
+                  arma::mat lower_d_hessian_mat = d_hessian_slice( arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) , arma::span( num_rows_coefficients_mat , num_coefficients_minus_one ) );
                   penalty_vec(c) = trace(inverted_mat*lower_d_hessian_mat)/2;
                 }
                 short_score_vec += penalty_vec;      // minus because the negative log likelihood is minimized
@@ -883,8 +891,9 @@ arma::field<arma::mat> stratEst_LCR_EM(arma::cube& output_cube, arma::cube& sum_
     for (int i = 0; i < num_ids; i++) {
       arma::rowvec i_shares_vec = i_shares_mat.row(i);
       arma::rowvec pr_entities_vec = priors_entities_mat.row(i);
-      new_share_mat( arma::span::all , sample_of_ids_shares(i) - 1 ) += ( pr_entities_vec.t()  / num_ids_sample_shares( sample_of_ids_shares(i) - 1 ) );
-      new_i_shares_mat( arma::span::all , sample_of_ids_shares(i) - 1 ) += ( i_shares_vec.t()  / num_ids_sample_shares( sample_of_ids_shares(i) - 1 ) );
+      int sample_of_ids_shares_int = sample_of_ids_shares(i);
+      new_share_mat( arma::span::all , sample_of_ids_shares_int - 1 ) += ( pr_entities_vec.t()  / num_ids_sample_shares( sample_of_ids_shares_int - 1 ) );
+      new_i_shares_mat( arma::span::all , sample_of_ids_shares_int - 1 ) += ( i_shares_vec.t()  / num_ids_sample_shares( sample_of_ids_shares_int - 1 ) );
     }
 
     // check overshooting and calculate eps for tolerance
@@ -981,6 +990,7 @@ arma::field<arma::mat> stratEst_SE(arma::cube& output_cube, arma::cube& sum_outp
   int num_cols_coefficient_mat = coefficient_mat.n_cols;
   int num_coefficients_to_est = coefficients.n_elem;
   int num_coefficients = num_rows_coefficient_mat*num_cols_coefficient_mat;
+  int num_coefficients_minus_one = num_coefficients-1;
   int k = share_mat.n_rows;
   int num_samples = share_mat.n_cols;
   int num_samples_responses = sample_of_ids_responses.max();
@@ -1090,15 +1100,17 @@ arma::field<arma::mat> stratEst_SE(arma::cube& output_cube, arma::cube& sum_outp
     arma::mat lines_entity_k = repmat( i_shares_mat.row(i).t() , 1 , num_cols_response_mat );
     arma::mat entity_slice( num_rows_response_mat , num_cols_response_mat );
     for ( int l = 0; l < num_rows_response_mat; l++){
-      entity_slice.row(l) = lines_entity_k.row( strat_id( l ) - 1 );
+      int strat_id_int = strat_id( l );
+      entity_slice.row(l) = lines_entity_k.row( strat_id_int - 1 );
     }
 
     // fisher information of responses
     if( response == "mixed" && num_responses_to_est > 0 ){
-      arma::mat response_mat_id = response_cube.slice( sample_of_ids_responses(i) - 1 );
+      int sample_of_ids_responses_int = sample_of_ids_responses(i);
+      arma::mat response_mat_id = response_cube.slice( sample_of_ids_responses_int - 1 );
       score_responses_slice = entity_slice % ( output_cube.slice(i) - ( response_mat_id % sum_outputs_cube.slice(i) ) );
       for (int j = 0; j < num_responses_to_est ; j++) {
-        double contrib = accu( score_responses_slice( find( indices_responses_cube.slice( sample_of_ids_responses(i) - 1 ) == j+1 ) ) );
+        double contrib = accu( score_responses_slice( find( indices_responses_cube.slice( sample_of_ids_responses_int - 1 ) == j+1 ) ) );
         if( arma::is_finite(contrib) ){
           score_contribution_responses(j) += contrib;
         }
@@ -1110,11 +1122,12 @@ arma::field<arma::mat> stratEst_SE(arma::cube& output_cube, arma::cube& sum_outp
 
     // fisher information for trembles
     if( num_trembles_to_est > 0 ){
-      arma::mat tremble_mat_id = tremble_cube.slice( sample_of_ids_trembles(i) - 1 );
+      int sample_of_ids_trembles_int = sample_of_ids_trembles(i);
+      arma::mat tremble_mat_id = tremble_cube.slice( sample_of_ids_trembles_int - 1 );
       arma::mat pr_mat = response_mat % (1 - tremble_mat_id) + ( 1 - response_mat ) % ( tremble_mat_id / (num_outputs - 1) );   // probability for emission with trembles
       score_trembles_slice =  entity_slice % tremble_weight_mat % ( output_cube.slice(i)  /  pr_mat  ) ;
       for (int j = 0; j < num_trembles_to_est ; j++) {
-        double contrib = accu( score_trembles_slice( find( indices_trembles_cube.slice( sample_of_ids_trembles(i) - 1 ) == j+1 ) ) );
+        double contrib = accu( score_trembles_slice( find( indices_trembles_cube.slice( sample_of_ids_trembles_int - 1 ) == j+1 ) ) );
         if( arma::is_finite(contrib) ){
           score_contribution_trembles(j) += contrib;
         }
@@ -1217,7 +1230,7 @@ arma::field<arma::mat> stratEst_SE(arma::cube& output_cube, arma::cube& sum_outp
 
   if( LCR ){
     // SEs of coefficients
-    arma::mat lower_hessian_mat = hessian_mat( arma::span( num_rows_coefficient_mat , num_coefficients-1 ) , arma::span( num_rows_coefficient_mat , num_coefficients-1 ) );
+    arma::mat lower_hessian_mat = hessian_mat( arma::span( num_rows_coefficient_mat , num_coefficients_minus_one ) , arma::span( num_rows_coefficient_mat , num_coefficients_minus_one ) );
     arma::mat inverse_neg_lower_hessian_mat = -lower_hessian_mat;
     if( false ){
       arma::vec unique_clusters = unique( cluster_id_vec );
@@ -1228,7 +1241,7 @@ arma::field<arma::mat> stratEst_SE(arma::cube& output_cube, arma::cube& sum_outp
         score_contributions_clusters.slice(c) = score_contribution_cluster.t() * score_contribution_cluster;
       }
       arma::mat meat_mat = sum( score_contributions_clusters , 2 );
-      arma::mat lower_meat_mat = meat_mat( arma::span( num_rows_coefficient_mat , num_coefficients-1 ) , arma::span( num_rows_coefficient_mat , num_coefficients-1 ) );
+      arma::mat lower_meat_mat = meat_mat( arma::span( num_rows_coefficient_mat , num_coefficients_minus_one ) , arma::span( num_rows_coefficient_mat , num_coefficients_minus_one ) );
       if( pinv( inverse_neg_lower_hessian_mat , -lower_hessian_mat ) ){
         coefficients_covar = inverse_neg_lower_hessian_mat * lower_meat_mat * inverse_neg_lower_hessian_mat;
         SE_coefficients = sqrt( coefficients_covar.diag() );
@@ -1253,7 +1266,7 @@ arma::field<arma::mat> stratEst_SE(arma::cube& output_cube, arma::cube& sum_outp
 
     // SE of shares from covar mat coefficients via delta method
     arma::mat covar_mat_coefficients( num_coefficients , num_coefficients, arma::fill::zeros );
-    arma::mat covar_lower_mat_coefficients = covar_mat_coefficients( arma::span( num_rows_coefficient_mat , num_coefficients-1 ) , arma::span( num_rows_coefficient_mat , num_coefficients-1 ) );
+    arma::mat covar_lower_mat_coefficients = covar_mat_coefficients( arma::span( num_rows_coefficient_mat , num_coefficients_minus_one ) , arma::span( num_rows_coefficient_mat , num_coefficients_minus_one ) );
     arma::mat inverse_neg_hessian_mat = -hessian_mat;
     if( pinv( inverse_neg_hessian_mat , -hessian_mat ) ){
       covar_mat_coefficients = inverse_neg_hessian_mat;
@@ -1690,8 +1703,9 @@ List stratEst_cpp(arma::mat data, arma::mat strategies, arma::vec sid , arma::ma
   if( specific_shares || specific_responses || specific_trembles || specific_coefficients ){
     for (int i = 0; i < num_ids; i++) {
       arma::vec unique_specific_sample_of_ids = unique( sample_id( find( id_vec == i+1 ) ) );
+      int unique_specific_sample_of_ids_int = unique_specific_sample_of_ids(0);
       specific_sample_of_ids(i) = unique_specific_sample_of_ids(0);
-      num_ids_specific_sample( unique_specific_sample_of_ids(0) - 1 ) += 1;
+      num_ids_specific_sample( unique_specific_sample_of_ids_int - 1 ) += 1;
     }
   }
 
@@ -1747,7 +1761,9 @@ List stratEst_cpp(arma::mat data, arma::mat strategies, arma::vec sid , arma::ma
         }
       }
       else{
-        state_mat(j,i) = strategy( state_mat( j-1 , i ) - 1 , ( num_non_zero_outputs + input(j) ) ); //
+        int state_mat_int = state_mat( j-1 , i );
+        int input_int = input(j);
+        state_mat(j,i) = strategy( state_mat_int - 1 , ( num_non_zero_outputs + input_int ) ); //
       }
     }
   }
@@ -1865,7 +1881,8 @@ List stratEst_cpp(arma::mat data, arma::mat strategies, arma::vec sid , arma::ma
   }
   else if( r_responses == "strategies" ){
     for (int i = 0; i < rows_strategies; i++) {
-      complete_indices_responses.row(i) += ( complete_strat_id(i) - 1 )*num_outputs;
+      int complete_strat_id_int = complete_strat_id(i);
+      complete_indices_responses.row(i) += ( complete_strat_id_int - 1 )*num_outputs;
     }
   }
   else if( r_responses == "states" ){
@@ -1880,7 +1897,8 @@ List stratEst_cpp(arma::mat data, arma::mat strategies, arma::vec sid , arma::ma
   }
   else if( r_trembles == "strategies" ){
     for (int i = 0; i < rows_strategies; i++) {
-      complete_indices_trembles.row(i) += ( complete_strat_id(i) - 1 );
+      int complete_strat_id_int = complete_strat_id(i);
+      complete_indices_trembles.row(i) += ( complete_strat_id_int - 1 );
     }
   }
   else if( r_trembles == "states" ){
@@ -2052,8 +2070,9 @@ List stratEst_cpp(arma::mat data, arma::mat strategies, arma::vec sid , arma::ma
         int num_unique_strat_id = unique_strat_id.n_elem;
         for (int i = 0; i < num_unique_strat_id; i++) {
           strat_id.replace( unique_strat_id(i) , i+1 );
-          share_mat( i , arma::span::all ) = complete_share_mat( unique_strat_id(i) - 1 , arma::span::all );
-          indices_shares( i , arma::span::all ) = complete_indices_shares( unique_strat_id(i) - 1 , arma::span::all );
+          int unique_strat_id_int = unique_strat_id(i);
+          share_mat( i , arma::span::all ) = complete_share_mat( unique_strat_id_int - 1 , arma::span::all );
+          indices_shares( i , arma::span::all ) = complete_indices_shares( unique_strat_id_int - 1 , arma::span::all );
         }
       }
 
@@ -2166,9 +2185,10 @@ List stratEst_cpp(arma::mat data, arma::mat strategies, arma::vec sid , arma::ma
           arma::vec unique_strat_id = unique( strat_id );
           int num_unique_strat_id = unique_strat_id.n_elem;
           for (int i = 0; i < num_unique_strat_id; i++) {
-            strat_id.replace( unique_strat_id(i) , i+1 );
-            coefficients_mat( arma::span::all , i ) = complete_coefficients_mat( arma::span::all , unique_strat_id(i) - 1  );
-            indices_coefficients_candidates( arma::span::all , i ) = complete_indices_coefficients( arma::span::all , unique_strat_id(i) - 1 );
+            int unique_strat_id_int = unique_strat_id(i);
+            strat_id.replace( unique_strat_id_int , i+1 );
+            coefficients_mat( arma::span::all , i ) = complete_coefficients_mat( arma::span::all , unique_strat_id_int - 1  );
+            indices_coefficients_candidates( arma::span::all , i ) = complete_indices_coefficients( arma::span::all , unique_strat_id_int - 1 );
           }
           indices_coefficients_candidates.col(0).fill(0);
           arma::vec unique_non_zero_indices_coefficients = unique( indices_coefficients_candidates( find( indices_coefficients_candidates != 0 ) ) );
