@@ -1,4 +1,4 @@
-f8c8bdc43017e55302f94c03c247e662 *DESCRIPTION
+28e8e9da06eef90cff00bf21ea96f8ec *DESCRIPTION
 10b1c3b05a17b73eba3d24e5e14016e3 *NAMESPACE
 d3cc96c8502d45e8a271ae3d76eef3b0 *R/DF2011.R
 98cf5a5d0539d1fae7fa24d903d08f90 *R/DFS2020.R
@@ -27,8 +27,8 @@ a149f18d911e0252a588e346ea935dd1 *R/stratEst_check_data.R
 8782a33ba9a3631993f02f14ad8b019d *R/stratEst_check_other.R
 e1a53b208e76c0622a10aa4530b21c5d *R/stratEst_check_sample_id.R
 ee9492ef4cec29754a00e2b46d8e357c *R/stratEst_check_shares.R
-349937f36d9e7fa1e34c6b0949e5236f *R/stratEst_check_strategies.R
-7a0e636d85a1587bc4c3018de114d2aa *R/stratEst_data.R
+6ebc7aee0c6d9329726651ea84e49232 *R/stratEst_check_strategies.R
+d466138d1d336aae2091da530f88ff63 *R/stratEst_data.R
 ef45216d07affd676a25883ad3f73c0b *R/stratEst_model.R
 674f52eed87f6ff1051f925719fe0213 *R/stratEst_post.R
 b7425b3b97440fe9476a82355c90e5a6 *R/stratEst_simulate.R
@@ -36,7 +36,7 @@ a52ad93702d8ba7bb5ca6949acc34d52 *R/stratEst_simulate_check_coefficients.R
 52ae51ef21371788794a0768071f18ea *R/stratEst_simulate_check_covariates.R
 c72dbb8450f294bef3d55b72e947a8ef *R/stratEst_simulate_check_shares.R
 acc22e8e2938efa1a35a105ea31e7af2 *R/stratEst_simulate_check_strategies.R
-727f073bdd22f15d3f0289b2f7697ce8 *R/stratEst_strategy.R
+9ecbb673fb26dbbe70e1f7b9c010058b *R/stratEst_strategy.R
 367d1acfce60d44290ed89dff13f2c73 *R/stratEst_test.R
 0eec67f10371732fbf54a84d4345778e *R/strategies_DF2011.R
 3b52ef2971117d84c8946996d57f6bdb *R/strategies_DFS2020.R
@@ -106,7 +106,7 @@ af505a9111166cb1060a78bdf93e840f *src/RcppExports.cpp
 3e4e464c09baf6c22e6b6b7615edff66 *src/cleanup.txt
 6f35999ed6c5117a6c547833c636afd1 *src/rcpparma_hello_world.cpp
 7c22b1b500cab25872924e218f1645f5 *src/registerDynamicSymbol.c
-12217acec10ae6b172e054b5d0674c9b *src/stratEst.cpp
+ea8d65e272676a0e750ae0b749ea593b *src/stratEst.cpp
 16015d5a2eebde97bd592abf094a58fd *src/stratEst_data.cpp
 332173f20d20942c02019350ea4dcadc *tests/spelling.R
 4b08ba758445bcb2865d535a5d4a2ecd *tests/testthat.R
