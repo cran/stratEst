@@ -1,4 +1,4 @@
-28e8e9da06eef90cff00bf21ea96f8ec *DESCRIPTION
+5eff45d955ebc58d266c4cc560f67d7b *DESCRIPTION
 10b1c3b05a17b73eba3d24e5e14016e3 *NAMESPACE
 d3cc96c8502d45e8a271ae3d76eef3b0 *R/DF2011.R
 98cf5a5d0539d1fae7fa24d903d08f90 *R/DFS2020.R
@@ -28,7 +28,7 @@ a149f18d911e0252a588e346ea935dd1 *R/stratEst_check_data.R
 e1a53b208e76c0622a10aa4530b21c5d *R/stratEst_check_sample_id.R
 ee9492ef4cec29754a00e2b46d8e357c *R/stratEst_check_shares.R
 6ebc7aee0c6d9329726651ea84e49232 *R/stratEst_check_strategies.R
-d466138d1d336aae2091da530f88ff63 *R/stratEst_data.R
+f194211630f36ae98f982b77ca54724c *R/stratEst_data.R
 ef45216d07affd676a25883ad3f73c0b *R/stratEst_model.R
 674f52eed87f6ff1051f925719fe0213 *R/stratEst_post.R
 b7425b3b97440fe9476a82355c90e5a6 *R/stratEst_simulate.R
@@ -37,7 +37,7 @@ a52ad93702d8ba7bb5ca6949acc34d52 *R/stratEst_simulate_check_coefficients.R
 c72dbb8450f294bef3d55b72e947a8ef *R/stratEst_simulate_check_shares.R
 acc22e8e2938efa1a35a105ea31e7af2 *R/stratEst_simulate_check_strategies.R
 9ecbb673fb26dbbe70e1f7b9c010058b *R/stratEst_strategy.R
-367d1acfce60d44290ed89dff13f2c73 *R/stratEst_test.R
+05a4366af5ac26b31f5ecf19d42820f6 *R/stratEst_test.R
 0eec67f10371732fbf54a84d4345778e *R/strategies_DF2011.R
 3b52ef2971117d84c8946996d57f6bdb *R/strategies_DFS2020.R
 9861ce57a903d9b808d88617fc6c53a7 *R/strategies_FRD2012.R
@@ -45,7 +45,7 @@ e24a1c1259ef40a5ab7a25a19052f282 *R/strategies_PD.R
 7519d43c1d69f204b065c39f083dd8f0 *R/strategies_RPS.R
 801218fad07656babf8fb1b77e697073 *R/summary_stratEst_check.R
 446fbb9f4332554f034a87312e55647a *R/summary_stratEst_data.R
-c7a9a3c339ad51517447ccb00b37fa1d *R/summary_stratEst_model.R
+d608d2c93fdeb069e89d2da4cbe7ba5b *R/summary_stratEst_model.R
 a4956b5bc8fcc1f2cf57cb18073b38a5 *README.md
 c3cded853a2388ad53569a7105d1c1e3 *cleanup
 1b0ae0d46e0e8c57525eb4b1afd4f7ee *configure
@@ -87,11 +87,11 @@ c687a7e44da90f4a4767d697209490c4 *man/print.stratEst.strategy.Rd
 fa3c3f1d27d0f137ea5042b77e1ff261 *man/round.stratEst.strategy.Rd
 f459fa3910289dfbec249ac39da2b349 *man/stratEst.Rd
 cba26ba81b60ab219df085cf57176dc0 *man/stratEst.check.Rd
-4a8d81bd612a7f41133c930c2167d536 *man/stratEst.data.Rd
+3b346f3e12879f002b36d3b877a4aa1b *man/stratEst.data.Rd
 4782de8eafeb1c6aefdab494b6f9100d *man/stratEst.model.Rd
 0409b83bf1755ef83d442090b5375610 *man/stratEst.simulate.Rd
 e81ceb4d6ac80038b09801d5d4241ff6 *man/stratEst.strategy.Rd
-ecf13d46c0c35fbc528a14a15428b913 *man/stratEst.test.Rd
+99b762484cd5244ad0edc21bca2774ec *man/stratEst.test.Rd
 db9fb6b4ad4d2e0f0c3b3076a27ed860 *man/strategies.DF2011.Rd
 225ed2967646bc0ccf9a3e6f6be9fc79 *man/strategies.DFS2020.Rd
 04d3ab4c071847f6aef008c1c6383630 *man/strategies.FRD2012.Rd
@@ -112,5 +112,5 @@ ea8d65e272676a0e750ae0b749ea593b *src/stratEst.cpp
 4b08ba758445bcb2865d535a5d4a2ecd *tests/testthat.R
 168883d406f8591e8cc16c4e49890e78 *tests/testthat/tests.behavior.R
 1a6e585acb70c0f41d76ea406e9a5972 *tests/testthat/tests.examples.R
-64481089bd18ba8c5791c2304e932540 *tests/testthat/tests.paper.R
+8688178c7ef01b105a2a6d16afd5d40c *tests/testthat/tests.paper.R
 563202a031c0ba79f24c0d72116c3fb4 *tests/testthat/tests.stratEst.R
